@@ -26,16 +26,22 @@ class FaceImageSerializer(serializers.ModelSerializer):
         (ec, nc, mc, np_array) = detect_coordinates(face_image.original_image.path)
 
         for eye_coordinate in ec:
+            print eye_coordinate
+            print type(eye_coordinate)
             eye_coordinate_obj = EyeCoordinate(coordinates=eye_coordinate)
             eye_coordinate_obj.face_image = face_image
             eye_coordinate_obj.save()
 
         for nose_coordinate in nc:
+            print nose_coordinate
+            print type(nose_coordinate)
             nose_coordinate_obj = NoseCoordinate(coordinates=nose_coordinate)
             nose_coordinate_obj.face_image = face_image
             nose_coordinate_obj.save()
 
         for mouth_coordinate in mc:
+            print mouth_coordinate
+            print type(mouth_coordinate)
             mouth_coordinate_obj = MouthCoordinate(coordinates=mouth_coordinate)
             mouth_coordinate_obj.face_image = face_image
             mouth_coordinate_obj.save()
