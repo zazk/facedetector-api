@@ -10,14 +10,39 @@ from ..detector.face_detector import detect_coordinates
 from .models import FaceImage, EyeCoordinate, NoseCoordinate, MouthCoordinate
 
 
+class EyeCoordinateSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='api:eyecoordinate-detail')
+
+    class Meta:
+        model = EyeCoordinate
+        fields = ('face_image', 'pk', 'url', 'coordinates', 'created_date', 'modified_date',)
+
+
+class NoseCoordinateSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='api:nosecoordinate-detail')
+
+    class Meta:
+        model = NoseCoordinate
+        fields = ('face_image', 'pk', 'url', 'coordinates', 'created_date', 'modified_date',)
+
+
+class MouthCoordinateSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='api:mouthcoordinate-detail')
+
+    class Meta:
+        model = MouthCoordinate
+        fields = ('face_image', 'pk', 'url', 'coordinates', 'created_date', 'modified_date',)
+
+
 class FaceImageSerializer(serializers.ModelSerializer):
-    eye_coordinates = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    nose_coordinates = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    mouth_coordinates = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    eye_coordinates = EyeCoordinateSerializer(many=True, read_only=True)
+    nose_coordinates = NoseCoordinateSerializer(many=True, read_only=True)
+    mouth_coordinates = MouthCoordinateSerializer(many=True, read_only=True)
+    url = serializers.HyperlinkedIdentityField(view_name='api:faceimage-detail')
 
     class Meta:
         model = FaceImage
-        fields = ('pk', 'title', 'original_image', 'processed_image', 'created_date', 'modified_date',
+        fields = ('pk', 'url', 'title', 'original_image', 'processed_image', 'created_date', 'modified_date',
                   'eye_coordinates', 'nose_coordinates', 'mouth_coordinates')
 
     def create(self, validated_data):
@@ -51,21 +76,3 @@ class FaceImageSerializer(serializers.ModelSerializer):
             f.close()
 
         return face_image
-
-
-class EyeCoordinateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EyeCoordinate
-        fields = ('face_image', 'coordinates', 'created_date', 'modified_date',)
-
-
-class NoseCoordinateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NoseCoordinate
-        fields = ('face_image', 'coordinates', 'created_date', 'modified_date',)
-
-
-class MouthCoordinateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MouthCoordinate
-        fields = ('face_image', 'coordinates', 'created_date', 'modified_date',)

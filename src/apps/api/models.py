@@ -1,6 +1,7 @@
 
 
-from django.core.urlresolvers import reverse
+from rest_framework.reverse import reverse
+
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
@@ -11,6 +12,9 @@ class FaceImage(models.Model):
     processed_image = models.ImageField(upload_to='uploads/processed/', blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse('api:faceimage-detail', kwargs={'pk': self.pk})
 
     def __unicode__(self):
         return self.title
@@ -23,7 +27,7 @@ class EyeCoordinate(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return "EyeCoordinate: {}".format(self.pk)
+        return "{}: {}".format(self.pk, self.coordinates)
 
 
 class NoseCoordinate(models.Model):
@@ -33,7 +37,7 @@ class NoseCoordinate(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return "EyeCoordinate: {}".format(self.pk)
+        return "{}: {}".format(self.pk, self.coordinates)
 
 
 class MouthCoordinate(models.Model):
@@ -43,4 +47,4 @@ class MouthCoordinate(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return "EyeCoordinate: {}".format(self.pk)
+        return "{}: {}".format(self.pk, self.coordinates)
