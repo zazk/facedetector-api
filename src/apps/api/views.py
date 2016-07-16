@@ -1,7 +1,10 @@
 from rest_framework import viewsets
 
-from .models import FaceImage, EyeCoordinate, NoseCoordinate, MouthCoordinate
-from .serializers import FaceImageSerializer, EyeCoordinateSerializer, NoseCoordinateSerializer, MouthCoordinateSerializer
+from .models import (EyeCoordinate, FaceCoordinate, FaceImage, MouthCoordinate,
+                     NoseCoordinate)
+from .serializers import (EyeCoordinateSerializer, FaceCoordinateSerializer,
+                          FaceImageSerializer, MouthCoordinateSerializer,
+                          NoseCoordinateSerializer)
 
 
 class FaceImageViewSet(viewsets.ModelViewSet):
@@ -22,3 +25,8 @@ class NoseCoordinateViewSet(viewsets.ModelViewSet):
 class MouthCoordinateViewSet(viewsets.ModelViewSet):
     queryset = MouthCoordinate.objects.all()
     serializer_class = MouthCoordinateSerializer
+
+
+class FaceCoordinateViewSet(viewsets.ModelViewSet):
+    queryset = FaceCoordinate.objects.all()
+    serializer_class = FaceCoordinateSerializer

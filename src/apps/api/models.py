@@ -1,15 +1,16 @@
 
 
-from rest_framework.reverse import reverse
-
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+
+from rest_framework.reverse import reverse
 
 
 class FaceImage(models.Model):
     title = models.CharField(max_length=100)
     original_image = models.ImageField(upload_to='uploads/originals/')
-    processed_image = models.ImageField(upload_to='uploads/processed/', blank=True)
+    processed_image = models.ImageField(upload_to='uploads/processed/',
+                                        blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -18,6 +19,16 @@ class FaceImage(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class FaceCoordinate(models.Model):
+    face_image = models.ForeignKey(FaceImage, related_name='face_coordinates')
+    coordinates = ArrayField(models.IntegerField(), blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return "{}: {}".format(self.pk, self.coordinates)
 
 
 class EyeCoordinate(models.Model):
